@@ -8,7 +8,7 @@ who you would like to do it with and whatever else you would like to document.
 Everyone has passions and goals, whether it is a country you would like to visit, 
 a career goal you are aspiring towards or a habit you would like to break. 
 As an avid traveller and dreamer, this app definitely is something I would 
-use frequently keeping me inspired. 
+use frequently, keeping me inspired. 
 
 ##**User Stories**:
 ____
