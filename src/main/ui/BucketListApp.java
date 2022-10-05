@@ -14,7 +14,7 @@ public class BucketListApp {
     List list = new List();
     String name;
 
-    public BucketListApp(){
+    public BucketListApp() {
         welcomeLine();
     }
 
@@ -30,15 +30,26 @@ public class BucketListApp {
     public void menu() {
         System.out.println("So, " + name + " what would you like to do?");
         System.out.println("a. add item \n" + "b. remove item \n"
-                + "c. view list \n" + "d. check off item \n" + "x. exit" );
+                + "c. view list \n" + "d. check off item \n" + "x. exit");
 
         switch (in.nextLine().toLowerCase()) {
-            case "a" -> caseA();
-            case "b" -> caseB();
-            case "c" -> caseC();
-            case "d" -> caseD();
-            case "x" -> exit();
-            default -> throw new IllegalStateException("Unexpected value: " + in.nextLine());
+            case "a":
+                caseA();
+                break;
+            case "b":
+                caseB();
+                break;
+            case "c":
+                caseC();
+                break;
+            case "d":
+                caseD();
+                break;
+            case "x":
+                exit();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + in.nextLine());
         }
     }
 
@@ -64,7 +75,9 @@ public class BucketListApp {
 
         if (Objects.equals(yesNo, "yes")) {
             caseA();
-        } else { caseC();}
+        } else {
+            caseC();
+        }
     }
 
     //REQUIRES: a non-empty list
@@ -78,7 +91,8 @@ public class BucketListApp {
             yesNo();
         }
 
-        System.out.println("Select the item you would like to remove from your list (enter the number next to the goal)");
+        System.out.println("Select the item you would like to remove from your list "
+                + "(enter the number next to the goal)");
         int i = in.nextInt();
         list.setAnInt(i);
         list.getGoalItemToRemove();
@@ -88,7 +102,9 @@ public class BucketListApp {
 
         if (Objects.equals(yesNo, "yes")) {
             caseB();
-        } else { caseC();}
+        } else {
+            caseC();
+        }
     }
 
     //EFFECTS: prints updated list
@@ -115,22 +131,14 @@ public class BucketListApp {
         list.setAnInt(i);
         scannerIssueFix();
 
-        if( list.getNumberOfItemsInList() <= i-1) {
+        if (list.getNumberOfItemsInList() <= i - 1) {
             System.out.println("list item doesn't exist");
             yesNo();
         } else if (!(list.checkExperience().equals(""))) {
             System.out.println("item already checked off");
             yesNo();
         }
-
-        System.out.println("Enter the date completed :)");
-        String dateCompleted = in.nextLine();
-        list.setDateCompleted(dateCompleted);
-        System.out.println("What was your experience like?");
-        String experienceNotes = in.nextLine();
-        list.setExperienceNotes(experienceNotes);
-        list.getGoalItemToCheck();
-        System.out.println("Would you like to check off another? (yes or no)");
+        caseDQuestions();
         String yesNo = in.nextLine();
 
         if (Objects.equals(yesNo, "yes")) {
@@ -140,16 +148,26 @@ public class BucketListApp {
         }
     }
 
+    public void caseDQuestions() {
+        System.out.println("Enter the date completed :)");
+        String dateCompleted = in.nextLine();
+        list.setDateCompleted(dateCompleted);
+        System.out.println("What was your experience like?");
+        String experienceNotes = in.nextLine();
+        list.setExperienceNotes(experienceNotes);
+        list.getGoalItemToCheck();
+        System.out.println("Would you like to check off another? (yes or no)");
+    }
+
 
     //EFFECTS: Either ends program or goes back to menu based on user input
     public void yesNo() {
         System.out.println("Would you like to go back to the main menu?");
         String yesOrNo = in.nextLine();
 
-        if (Objects.equals(yesOrNo, "yes")){
+        if (Objects.equals(yesOrNo, "yes")) {
             menu();
-        }
-        else {
+        } else {
             exit();
         }
     }
