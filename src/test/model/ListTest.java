@@ -3,8 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ListTest {
 
@@ -36,6 +35,7 @@ public class ListTest {
 
     @Test
     void testGetGoalItemToRemove() {
+        list.setAnInt(1);
         list.getGoalItemToRemove();
         assertEquals(0, list.getNumberOfItemsInList());
 
@@ -49,7 +49,9 @@ public class ListTest {
         list.getGoalItemToCheck();
         assertEquals("Go skydiving X Completed: 06/16", goal.getGoal());
         assertEquals("Experience: Incredible! Felt like I was flying!", goal.getExperience());
+        assertNotNull(list.checkExperience());
     }
+
 
     @Test
     void testGetBucketList() {
