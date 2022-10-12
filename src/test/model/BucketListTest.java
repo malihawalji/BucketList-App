@@ -5,20 +5,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ListTest {
+public class BucketListTest {
 
     String notes = "by summer";
     String date = "Dec 20th";
     String goalName = "Go skydiving";
     String dateCompleted = "06/16";
     String experience = "";
-    List list;
+    BucketList list;
     Goal goal;
 
 
     @BeforeEach
     void runBefore() {
-        list = new List();
+        list = new BucketList();
         goal = new Goal(goalName, notes, date, experience);
         goal.setNotes(notes);
         goal.setGoal(goalName);
@@ -55,8 +55,8 @@ public class ListTest {
 
     @Test
     void testGetBucketList() {
-        assertEquals(list.getBucketList(), "\n#1" + " Date: " + "Dec 20th" + "\n" + "Go skydiving" + "\n"
-                + "Notes: " + "by summer" + "\n");
+        assertEquals(list.getBucketList(), "\n#1 " + "Date: " + "Dec 20th" + "\n" + "Go skydiving" + "\n"
+                + "Notes: " + "by summer" + "\n" + "" + "\n");
     }
 
 

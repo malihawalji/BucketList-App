@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class BucketListApp {
 
     Scanner in = new Scanner(System.in);
-    List list = new List();
+    BucketList list = new BucketList();
     String name;
 
     public BucketListApp() {

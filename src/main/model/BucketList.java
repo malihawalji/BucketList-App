@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 //This class creates a list of goal objects, handles adding/removing goal objects,
 // checking them off and printing out the final list.
-public class List {
+public class BucketList {
 
     private int anInt;
     private String newGoalName;
@@ -15,10 +15,11 @@ public class List {
     //MODIFIES: this
     //EFFECTS: creates new ArrayList, listOfGoals which stores multiple
     // goal objects as part of List class constructor
-    public List() {
+    public BucketList() {
         listOfGoals = new ArrayList<>();
     }
 
+    //
     public void addGoal(Goal goal) {
         listOfGoals.add(goal);
     }
@@ -69,6 +70,8 @@ public class List {
         return experienceNotes;
     }
 
+    //EFFECTS: based on user response gets the index and
+    // checks whether experience notes have been added or not
     public String checkExperience() {
         return listOfGoals.get(anInt).getExperience();
     }
@@ -77,16 +80,17 @@ public class List {
     //EFFECTS: prints listOfGoals information in a numbered and labelled format
     public String getBucketList() {
         StringBuilder bucketList = new StringBuilder();
-        for (int i = 0; i < getNumberOfItemsInList(); i++) {
-            int listItem = i + 1;
-            bucketList.append("\n#").append(listItem).append(" Date: ")
-                    .append(listOfGoals.get(i).getDate()).append("\n")
-                    .append(listOfGoals.get(i).getGoal()).append("\n")
-                    .append("Notes: ").append(listOfGoals.get(i)
-                            .getNotes()).append("\n")
-                    .append(listOfGoals.get(i).getExperience()).append("\n");
+        if (!listOfGoals.isEmpty()) {
+            for (int i = 0; i < getNumberOfItemsInList(); i++) {
+                int listItem = i + 1;
+                bucketList.append("\n#").append(listItem).append(" Date: ")
+                        .append(listOfGoals.get(i).getDate()).append("\n")
+                        .append(listOfGoals.get(i).getGoal()).append("\n")
+                        .append("Notes: ").append(listOfGoals.get(i)
+                                .getNotes()).append("\n")
+                        .append(listOfGoals.get(i).getExperience()).append("\n");
+            }
         }
-
         return bucketList.toString();
     }
 }
