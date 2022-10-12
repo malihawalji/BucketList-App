@@ -57,8 +57,8 @@ public class BucketListTest {
     void testGetBucketList() {
         assertEquals(list.getBucketList(), "\n#1 " + "Date: " + "Dec 20th" + "\n" + "Go skydiving" + "\n"
                 + "Notes: " + "by summer" + "\n" + "" + "\n");
+        assertFalse(list.getBucketList().isEmpty());
     }
-
 
     @Test
     void testGetNumberOfItemsInList() {
