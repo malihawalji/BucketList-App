@@ -23,11 +23,11 @@ public class BucketListTest {
         goal.setNotes(notes);
         goal.setGoal(goalName);
         goal.setDate(date);
-        list.addGoal(goal);
     }
 
     @Test
     void testAddGoal() {
+        list.addGoal(goal);
         list.addGoal(goal);
         list.addGoal(goal);
         assertEquals(3, list.getNumberOfItemsInList());
@@ -35,6 +35,7 @@ public class BucketListTest {
 
     @Test
     void testGetGoalItemToRemove() {
+        list.addGoal(goal);
         list.setAnInt(1);
         list.getGoalItemToRemove();
         assertEquals(0, list.getNumberOfItemsInList());
@@ -43,6 +44,7 @@ public class BucketListTest {
 
     @Test
     void testGetGoalItemToCheck() {
+        list.addGoal(goal);
         list.setDateCompleted(dateCompleted);
         experience = "Incredible! Felt like I was flying!";
         list.setExperienceNotes(experience);
@@ -55,13 +57,21 @@ public class BucketListTest {
 
     @Test
     void testGetBucketList() {
+        list.addGoal(goal);
         assertEquals(list.getBucketList(), "\n#1 " + "Date: " + "Dec 20th" + "\n" + "Go skydiving" + "\n"
                 + "Notes: " + "by summer" + "\n" + "" + "\n");
         assertFalse(list.getBucketList().isEmpty());
     }
 
     @Test
+    void testGetBucketListWhenListIsEmpty(){
+        boolean empty = list.getBucketList().isEmpty();
+        assertTrue(empty);
+    }
+
+    @Test
     void testGetNumberOfItemsInList() {
+        list.addGoal(goal);
         list.addGoal(goal);
         assertEquals(2, list.getNumberOfItemsInList());
     }
