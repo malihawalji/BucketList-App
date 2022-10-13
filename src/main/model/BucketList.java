@@ -19,7 +19,8 @@ public class BucketList {
         listOfGoals = new ArrayList<>();
     }
 
-    //
+    //MODIFIES: this
+    //EFFECTS: adds Goal item to listOfGoals
     public void addGoal(Goal goal) {
         listOfGoals.add(goal);
     }
@@ -32,6 +33,8 @@ public class BucketList {
         this.anInt = anInt - 1;
     }
 
+    //MODIFIES: Goal
+    //EFFECTS: modifies the name of the goal and adds the date completed as part of it
     public void setNewGoalName(String newGoalName) {
         this.newGoalName = newGoalName;
     }

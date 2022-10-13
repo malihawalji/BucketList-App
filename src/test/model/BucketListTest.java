@@ -26,6 +26,11 @@ public class BucketListTest {
     }
 
     @Test
+    void noItemsAdded(){
+        assertEquals(0, list.getNumberOfItemsInList());
+    }
+
+    @Test
     void testAddGoal() {
         list.addGoal(goal);
         list.addGoal(goal);
@@ -61,6 +66,29 @@ public class BucketListTest {
         assertEquals(list.getBucketList(), "\n#1 " + "Date: " + "Dec 20th" + "\n" + "Go skydiving" + "\n"
                 + "Notes: " + "by summer" + "\n" + "" + "\n");
         assertFalse(list.getBucketList().isEmpty());
+    }
+
+    @Test
+    void testGetBucketListTwoGoals(){
+        list.addGoal(goal);
+        list.addGoal(goal);
+        assertEquals(list.getBucketList(),"\n#1 " + "Date: " + "Dec 20th" + "\n" + "Go skydiving" + "\n"
+                + "Notes: " + "by summer" + "\n" + "" + "\n" + "\n#2 " + "Date: "
+                + "Dec 20th" + "\n" + "Go skydiving" + "\n"
+                + "Notes: " + "by summer" + "\n" + "" + "\n" );
+    }
+
+    @Test
+    void itemAlreadyCheckedOff(){
+        list.addGoal(goal);
+        list.setDateCompleted(dateCompleted);
+        experience = "Incredible! Felt like I was flying!";
+        list.setExperienceNotes(experience);
+        list.getGoalItemToCheck();
+        assertEquals("Go skydiving X Completed: 06/16", goal.getGoal());
+        assertEquals("Experience: Incredible! Felt like I was flying!", goal.getExperience());
+
+        assertNotEquals("", list.checkExperience());
     }
 
     @Test

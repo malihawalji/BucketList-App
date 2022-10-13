@@ -8,6 +8,8 @@ public class Goal {
     private String date;
     private String experience;
 
+    //MODIFIES: Goal
+    //EFFECTS: Constructor creates new Goal object with goalName, notes, date, and experience
     public Goal(String goalName, String notes, String date, String experience) {
         this.goalName = goalName;
         this.date = date;

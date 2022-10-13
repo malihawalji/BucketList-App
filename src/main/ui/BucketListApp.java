@@ -14,6 +14,7 @@ public class BucketListApp {
     BucketList list = new BucketList();
     String name;
 
+    //EFFECTS: constructor calls first method to execute
     public BucketListApp() {
         welcomeLine();
     }
@@ -53,7 +54,6 @@ public class BucketListApp {
         }
     }
 
-    //REQUIRES:
     //MODIFIES: Goal, List
     //EFFECTS: creates goal object and adds it to list class
     public void caseA() {
@@ -148,6 +148,8 @@ public class BucketListApp {
         }
     }
 
+    //MODIFIES: Goal
+    //EFFECTS: Sets date completed and experience notes, modifies goal object being "checked off"
     public void caseDQuestions() {
         System.out.println("Enter the date completed :)");
         String dateCompleted = in.nextLine();
