@@ -1,10 +1,16 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 //This class creates a list of goal objects, handles adding/removing goal objects,
 // checking them off and printing out the final list.
-public class BucketList {
+public class BucketList implements Writable {
 
     private int anInt;
     private String newGoalName;
@@ -31,6 +37,10 @@ public class BucketList {
 
     public void setAnInt(int anInt) {
         this.anInt = anInt - 1;
+    }
+
+    public List<Goal> getList() {
+        return listOfGoals;
     }
 
     //MODIFIES: Goal
@@ -95,5 +105,22 @@ public class BucketList {
             }
         }
         return bucketList.toString();
+    }
+
+    //EFFECTS: makes the list a JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("list of goals", this.listToJson());
+        return json;
+    }
+
+    //EFFECTS: returns all the list of goals and each component of each goal as a JSON array
+    private JSONArray listToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Goal g : this.listOfGoals) {
+            jsonArray.put(g.toJson());
+        }
+        return jsonArray;
     }
 }

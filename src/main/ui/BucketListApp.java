@@ -1,7 +1,13 @@
 package ui;
 
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -10,12 +16,23 @@ import java.util.Scanner;
 //by through removing or checking goals as completed
 public class BucketListApp {
 
-    Scanner in = new Scanner(System.in);
-    BucketList list = new BucketList();
-    String name;
+    private static final String JSON_STORE = "./data/bucketList.json";
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu");
+    private final LocalDate localDate = LocalDate.now();
+    private final Suggestion suggestion = new Suggestion();
+    private final Scanner in;
+    private BucketList list;
+    private String name;
+    private final String date = dateFormatter.format(localDate);
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
 
     //EFFECTS: constructor calls first method to execute
     public BucketListApp() {
+        in = new Scanner((System.in));
+        list = new BucketList();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         welcomeLine();
     }
 
@@ -26,13 +43,20 @@ public class BucketListApp {
         menu();
     }
 
-    //REQUIRES: input = a | b | c | d | x
-    //EFFECTS: calls class user chooses
-    public void menu() {
+    //EFFECTS: displays the menu options to user
+    public void displayMenu() {
         System.out.println("So, " + name + " what would you like to do?");
         System.out.println("a. add item \n" + "b. remove item \n"
-                + "c. view list \n" + "d. check off item \n" + "x. exit");
+                + "c. view list \n" + "d. check off item \n"
+                + "e. save list\n" + "f. load existing list\n"
+                + "g. get a suggestion\n" + "x. exit");
+    }
 
+    //REQUIRES: input = a | b | c | d | x
+    //EFFECTS: calls method user chooses, throws exception if invalid input
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    public void menu() {
+        displayMenu();
         switch (in.nextLine().toLowerCase()) {
             case "a":
                 caseA();
@@ -46,6 +70,15 @@ public class BucketListApp {
             case "d":
                 caseD();
                 break;
+            case "e"  :
+                caseE();
+                break;
+            case "f"  :
+                caseF();
+                break;
+            case "g"  :
+                caseG();
+                break;
             case "x":
                 exit();
                 break;
@@ -54,13 +87,11 @@ public class BucketListApp {
         }
     }
 
-    //MODIFIES: Goal, List
+    //MODIFIES: this
     //EFFECTS: creates goal object and adds it to list class
     public void caseA() {
         System.out.println("Please type in what goal you would like to add to your bucket list!");
         String goalName = in.nextLine();
-        System.out.println("Please enter the current date");
-        String date = in.nextLine();
         System.out.println("Enter any notes, ex: when I want to complete it, where, why, with etc :)");
         String notes = in.nextLine();
         String experience = "";
@@ -81,7 +112,7 @@ public class BucketListApp {
     }
 
     //REQUIRES: a non-empty list
-    //MODIFIES: Goal, List
+    //MODIFIES: this
     //EFFECTS: removes chosen goal object from list class
     public void caseB() {
         System.out.println(list.getBucketList());
@@ -116,7 +147,7 @@ public class BucketListApp {
     }
 
     //REQUIRES: index exists && list.getNumberOfItemsInList() > 0 && list item isn't already checked off
-    //MODIFIES: Goal, List
+    //MODIFIES: this
     //EFFECTS: modifies goal object's name to reflect new user input that "checks off" item from list
     // also modifies experience parameter of the goal object
     public void caseD() {
@@ -148,7 +179,7 @@ public class BucketListApp {
         }
     }
 
-    //MODIFIES: Goal
+    //MODIFIES: this
     //EFFECTS: Sets date completed and experience notes, modifies goal object being "checked off"
     public void caseDQuestions() {
         System.out.println("Enter the date completed :)");
@@ -161,10 +192,64 @@ public class BucketListApp {
         System.out.println("Would you like to check off another? (yes or no)");
     }
 
+    //MODIFIES: this
+    //EFFECTS: saves list to JSON_STORE
+    public void caseE() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(list);
+            jsonWriter.close();
+            System.out.println("Saved " + name + "'s Bucket List to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+        caseC();
+    }
+
+    //REQUIRES: JSON_STORE not empty
+    //MODIFIES: this
+    //EFFECTS: loads existing list data if saved previously
+    public void caseF() {
+        try {
+            list = jsonReader.read();
+            System.out.println("Loaded " + name + "'s Bucket List from" + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+        caseC();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: presents a random suggestion to potentially add to bucket list,
+    // if user decides to add the suggestion, it gets added to the bucket list
+    // if not goes back to main menu
+    public void caseG() {
+        System.out.println("Here is a suggestion to add to your bucket list: ");
+        suggestion.chooseRandomSuggestion();
+        System.out.println(suggestion.getRandomSuggestion());
+        System.out.println("Would you like to add this to your bucket list?");
+        String yesNo = in.nextLine();
+        if (Objects.equals(yesNo, "yes")) {
+            String goalName = suggestion.getRandomSuggestion();
+            System.out.println("Enter any notes, ex: when I want to complete it, where, why, with etc :)");
+            String notes = in.nextLine();
+            String experience = "";
+            Goal goal = new Goal(goalName, notes, date, experience);
+            goal.setNotes(notes);
+            goal.setGoal(goalName);
+            goal.setDate(date);
+            goal.setExperience(experience);
+            list.addGoal(goal);
+            caseC();
+        } else {
+            menu();
+        }
+
+    }
 
     //EFFECTS: Either ends program or goes back to menu based on user input
     public void yesNo() {
-        System.out.println("Would you like to go back to the main menu?");
+        System.out.println("Would you like to go back to the main menu? (yes or no)");
         String yesOrNo = in.nextLine();
 
         if (Objects.equals(yesOrNo, "yes")) {

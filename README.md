@@ -17,3 +17,6 @@ ____
 - As a user, I want to be able to remove items from my bucket list 
 - As a user, I want to be able to view my list 
 - As a user, I would like to add notes to each item, whether it is why I want to do it, with who, where etc.
+- As a user, I would like to get suggestions for what to add to my Bucket List
+- As a user, I would like to be able to save the information I have input
+- As a user, I would like to load previously saved information

@@ -11,7 +11,6 @@ class GoalTest {
     String experience;
     Goal goal;
 
-
     @BeforeEach
     void runBeforeEach() {
         goal = new Goal(goalName, notes, date, experience);

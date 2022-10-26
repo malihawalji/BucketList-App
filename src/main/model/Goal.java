@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 //Creates goal objects and has getters and setters for each component of the object
 public class Goal {
 
@@ -48,6 +50,16 @@ public class Goal {
 
     public String getExperience() {
         return experience;
+    }
+
+    //EFFECTS: Makes each component of goal part of JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("goalName", this.goalName);
+        json.put("notes", this.notes);
+        json.put("date", this.date);
+        json.put("experience", this.experience);
+        return json;
     }
 }
 
