@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+//
 public class JsonReader {
     private String source;
 
@@ -27,6 +28,9 @@ public class JsonReader {
         return parseList(jsonObject);
     }
 
+
+    //MODIFIES:
+    //EFFECTS:
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
@@ -54,6 +58,8 @@ public class JsonReader {
         }
     }
 
+    //MODIFIES: goal
+    //EFFECTS: retrieves JSON objects and adds them back as goals
     private void addList(BucketList l, JSONObject jsonObject) {
         String goalName = jsonObject.getString("goalName");
         String notes = jsonObject.getString("notes");
