@@ -107,6 +107,7 @@ public class BucketList implements Writable {
         return bucketList.toString();
     }
 
+    //MODIFIES: this
     //EFFECTS: makes the list a JSON object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -114,6 +115,7 @@ public class BucketList implements Writable {
         return json;
     }
 
+    //MODIFIES: this
     //EFFECTS: returns all the list of goals and each component of each goal as a JSON array
     private JSONArray listToJson() {
         JSONArray jsonArray = new JSONArray();
