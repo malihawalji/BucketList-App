@@ -92,6 +92,15 @@ public class BucketListTest {
     }
 
     @Test
+    void testGetList() {
+        assertEquals("[]", list.getList().toString());
+        list.addGoal(goal);
+        assertEquals("Go skydiving", list.getList().get(0).getGoal());
+        assertEquals("", list.getList().get(0).getExperience());
+        assertEquals("by summer", list.getList().get(0).getNotes());
+        assertEquals("Dec 20th", list.getList().get(0).getDate());
+    }
+    @Test
     void testGetBucketListWhenListIsEmpty(){
         boolean empty = list.getBucketList().isEmpty();
         assertTrue(empty);
@@ -102,5 +111,24 @@ public class BucketListTest {
         list.addGoal(goal);
         list.addGoal(goal);
         assertEquals(2, list.getNumberOfItemsInList());
+    }
+
+    @Test
+    void testBucketListToJson(){
+        list.addGoal(goal);
+       assertEquals("Go skydiving", list.toJson().getJSONArray("list of goals").getJSONObject(0).getString("goalName"));
+        assertEquals("Dec 20th", list.toJson().getJSONArray("list of goals").getJSONObject(0).getString("date"));
+        assertEquals("by summer", list.toJson().getJSONArray("list of goals").getJSONObject(0).getString("notes"));
+        assertEquals("", list.toJson().getJSONArray("list of goals").getJSONObject(0).getString("experience"));
+    }
+
+    @Test
+    void testBucketListListToJson() {
+        list.addGoal(goal);
+        assertEquals("Go skydiving",list.listToJson().getJSONObject(0).getString("goalName"));
+        assertEquals("Dec 20th", list.listToJson().getJSONObject(0).getString("date"));
+        assertEquals("by summer", list.listToJson().getJSONObject(0).getString("notes"));
+        assertEquals("", list.listToJson().getJSONObject(0).getString("experience"));
+
     }
 }

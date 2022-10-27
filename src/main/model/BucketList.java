@@ -117,7 +117,7 @@ public class BucketList implements Writable {
 
     //MODIFIES: this
     //EFFECTS: returns all the list of goals and each component of each goal as a JSON array
-    private JSONArray listToJson() {
+    protected JSONArray listToJson() {
         JSONArray jsonArray = new JSONArray();
 
         for (Goal g : this.listOfGoals) {

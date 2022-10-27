@@ -2,6 +2,11 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import persistence.*;
+
+import javax.management.StringValueExp;
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GoalTest {
@@ -38,5 +43,18 @@ class GoalTest {
     void testGetExperience(){
         goal.setExperience("awesome!");
         assertEquals("awesome!", goal.getExperience());
+    }
+
+    @Test
+    void testGoalToJson() {
+        goal.setGoal("skydive");
+        goal.setDate("10/9");
+        goal.setNotes("yay");
+        goal.setExperience("awesome");
+        assertEquals("skydive",goal.toJson().getString("goalName"));
+        assertEquals("10/9",goal.toJson().getString("date"));
+        assertEquals("yay",goal.toJson().getString("notes"));
+        assertEquals("awesome",goal.toJson().getString("experience"));
+
     }
 }
