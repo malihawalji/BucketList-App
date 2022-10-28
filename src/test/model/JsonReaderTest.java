@@ -2,17 +2,14 @@ package model;
 
 import java.io.IOException;
 import java.util.List;
-import model.BucketList;
-import model.Goal;
-import model.Suggestion;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class testJsonReader extends JsonTest {
+public class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderNonExistentFile() {
