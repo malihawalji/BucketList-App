@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class testJsonReader extends JsonTest {
+
     @Test
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
@@ -46,8 +47,30 @@ public class testJsonReader extends JsonTest {
                     , "10/18/2022", "");
             this.checkBucketList((Goal)listOfGoals.get(1), "go skydiving"
                     , "with friends next summer", "10/18/2022", "");
+           assertEquals("{\"list of goals\": [  {    \"date\": \"10/18/2022\",   " +
+                   " \"notes\": \"in may\",    \"goalName\": \"go to banff via roadtrip\",   " +
+                   " \"experience\": \"\"  },  {    \"date\": \"10/18/2022\",   " +
+                   " \"notes\": \"with friends next summer\",    \"goalName\": \"go skydiving\",  " +
+                   "  \"experience\": \"\"  }]}", reader.readFile("./data/testReaderBucketListNotEmpty.json"));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
    }
+
+   @Test
+   void testReaderAddList(){
+       JsonReader reader = new JsonReader("./data/testReaderEmptyBucketList.json");
+       Goal goal = new Goal("A", "B", "C", "D");
+       BucketList list = new BucketList();
+       list.addGoal(goal);
+       reader.addList(list, goal.toJson());
+       assertEquals("A", goal.toJson().getString("goalName"));
+       assertEquals("B", goal.toJson().getString("notes"));
+       assertEquals("C", goal.toJson().getString("date"));
+       assertEquals("D", goal.toJson().getString("experience"));
+       //reader.addLists(list, goal.toJson());
+       //assertEquals("", goal.toJson().toString());
+   }
 }
+
+

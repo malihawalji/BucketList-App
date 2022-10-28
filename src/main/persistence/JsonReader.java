@@ -31,7 +31,7 @@ public class JsonReader {
 
     //MODIFIES:
     //EFFECTS:
-    private String readFile(String source) throws IOException {
+    public String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
@@ -50,7 +50,7 @@ public class JsonReader {
 
     // MODIFIES: l
     // EFFECTS: parses goals from JSON object and adds them to List
-    private void addLists(BucketList l, JSONObject jsonObject) {
+    public void addLists(BucketList l, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("list of goals");
         for (Object json : jsonArray) {
             JSONObject nextGoal = (JSONObject) json;
@@ -60,7 +60,7 @@ public class JsonReader {
 
     //MODIFIES: goal
     //EFFECTS: retrieves JSON objects and adds them back as goals
-    private void addList(BucketList l, JSONObject jsonObject) {
+    public void addList(BucketList l, JSONObject jsonObject) {
         String goalName = jsonObject.getString("goalName");
         String notes = jsonObject.getString("notes");
         String date = jsonObject.getString("date");
