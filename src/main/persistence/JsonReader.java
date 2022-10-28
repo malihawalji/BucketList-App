@@ -11,7 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-//
+//Method templates referenced from JsonSerializationDemo-master
+//represents a reader which reads JSON data stored in a source file
 public class JsonReader {
     private String source;
 
@@ -28,9 +29,8 @@ public class JsonReader {
         return parseList(jsonObject);
     }
 
-
-    //MODIFIES:
-    //EFFECTS:
+    //EFFECTS: reads source file and returns it as a string
+    //throws IOException if an error occurs reading data from file
     public String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 

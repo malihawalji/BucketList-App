@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+//Method templates for toJson and listToJson referenced from JsonSerializationDemo-master
 //This class creates a list of goal objects, handles adding/removing goal objects,
 // checking them off and printing out the final list.
 public class BucketList implements Writable {

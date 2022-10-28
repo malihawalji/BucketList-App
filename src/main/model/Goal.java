@@ -2,6 +2,7 @@ package model;
 
 import org.json.JSONObject;
 
+//Method template for toJson referenced from JsonSerializationDemo-master
 //Creates goal objects and has getters and setters for each component of the object
 public class Goal {
 
