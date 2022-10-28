@@ -58,7 +58,7 @@ public class testJsonReader extends JsonTest {
    }
 
    @Test
-   void testReaderAddList(){
+   void testAddList(){
        JsonReader reader = new JsonReader("./data/testReaderEmptyBucketList.json");
        Goal goal = new Goal("A", "B", "C", "D");
        BucketList list = new BucketList();
