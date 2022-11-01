@@ -18,12 +18,21 @@ public class BucketList implements Writable {
     public final ArrayList<Goal> listOfGoals;
     private String dateCompleted;
     private String experienceNotes = null;
+    private String name;
 
     //MODIFIES: this
     //EFFECTS: creates new ArrayList, listOfGoals which stores multiple
     // goal objects as part of List class constructor
     public BucketList() {
         listOfGoals = new ArrayList<>();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     //MODIFIES: this

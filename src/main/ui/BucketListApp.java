@@ -4,6 +4,7 @@ import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -16,7 +17,8 @@ import java.util.Scanner;
 //by through removing or checking goals as completed
 public class BucketListApp {
 
-    private static final String JSON_STORE = "./data/bucketList.json";
+    private String jsonStore;
+    //= "./data/bucketList.json";
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu");
     private final LocalDate localDate = LocalDate.now();
     private final Suggestion suggestion = new Suggestion();
@@ -24,28 +26,26 @@ public class BucketListApp {
     private BucketList list;
     private String name;
     private final String date = dateFormatter.format(localDate);
-    private final JsonWriter jsonWriter;
-    private final JsonReader jsonReader;
 
     //EFFECTS: constructor calls first method to execute
     public BucketListApp() {
         in = new Scanner((System.in));
         list = new BucketList();
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
         welcomeLine();
     }
 
     //EFFECTS: takes in name from user
     public void welcomeLine() {
-        System.out.println("Hello! Welcome to The Bucket List! Please enter your name");
+        System.out.println("Hello! Welcome to The Bucket List! Please enter your name"
+                + " \nif you are a returning user please enter your name exactly as you did before");
         name = in.nextLine();
+        list.setName(name);
         menu();
     }
 
     //EFFECTS: displays the menu options to user
     public void displayMenu() {
-        System.out.println("So, " + name + " what would you like to do?");
+        System.out.println("So, " + list.getName() + " what would you like to do?");
         System.out.println("a. add item \n" + "b. remove item \n"
                 + "c. view list \n" + "d. check off item \n"
                 + "e. save list\n" + "f. load existing list\n"
@@ -100,6 +100,7 @@ public class BucketListApp {
         goal.setGoal(goalName);
         goal.setDate(date);
         goal.setExperience(experience);
+        goal.setName(list.getName());
         list.addGoal(goal);
         System.out.println("Would you like to add another? (yes or no)");
         String yesNo = in.nextLine();
@@ -140,7 +141,7 @@ public class BucketListApp {
 
     //EFFECTS: prints updated list
     public void caseC() {
-        System.out.println("Here is your updated list:\n" + name + "'s BucketList! "
+        System.out.println("Here is your updated list:\n" + list.getName() + "'s BucketList! "
                 + list.getNumberOfItemsInList() + " items in list");
         System.out.println(list.getBucketList());
         yesNo();
@@ -195,13 +196,22 @@ public class BucketListApp {
     //MODIFIES: this
     //EFFECTS: saves list to JSON_STORE
     public void caseE() {
+        File file = new File("./data/" + list.getName() + "bucketList.json");
+        jsonStore = "./data/" + list.getName() + "bucketList.json";
         try {
+            boolean fileCreated = file.createNewFile();
+            if (fileCreated) {
+                System.out.println("new file created");
+            }
+            JsonWriter jsonWriter = new JsonWriter(jsonStore);
             jsonWriter.open();
             jsonWriter.write(list);
             jsonWriter.close();
-            System.out.println("Saved " + name + "'s Bucket List to " + JSON_STORE);
+            System.out.println("Saved " + list.getName() + "'s Bucket List to " + jsonStore);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+            System.out.println("Unable to write to file: " + jsonStore);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         caseC();
     }
@@ -210,13 +220,21 @@ public class BucketListApp {
     //MODIFIES: this
     //EFFECTS: loads existing list data if saved previously
     public void caseF() {
-        try {
-            list = jsonReader.read();
-            System.out.println("Loaded " + name + "'s Bucket List from" + JSON_STORE);
-        } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
+        jsonStore = "./data/" + list.getName() + "bucketList.json";
+        JsonReader jsonReader = new JsonReader(jsonStore);
+        if (jsonStore.contains(list.getName())) {
+            try {
+                list = jsonReader.read();
+                System.out.println("Loaded " + list.getName() + "'s Bucket List from" + jsonStore);
+            } catch (IOException e) {
+                System.out.println("Unable to read from file: " + jsonStore
+                        + "\nfile may not exist, try typing in your name again: ");
+                name = in.nextLine();
+                list.setName(name);
+                caseF();
+            }
+            caseC();
         }
-        caseC();
     }
 
     //MODIFIES: this

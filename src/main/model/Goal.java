@@ -10,6 +10,7 @@ public class Goal {
     private String notes;
     private String date;
     private String experience;
+    private String name;
 
     //MODIFIES: Goal
     //EFFECTS: Constructor creates new Goal object with goalName, notes, date, and experience
@@ -53,9 +54,18 @@ public class Goal {
         return experience;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     //EFFECTS: Makes each component of goal part of JSON object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
+        json.put("User's name", this.name);
         json.put("goalName", this.goalName);
         json.put("notes", this.notes);
         json.put("date", this.date);

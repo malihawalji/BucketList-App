@@ -61,11 +61,13 @@ public class JsonReader {
     //MODIFIES: goal
     //EFFECTS: retrieves JSON objects and adds them back as goals
     public void addList(BucketList l, JSONObject jsonObject) {
+        String name = jsonObject.getString("User's name");
         String goalName = jsonObject.getString("goalName");
         String notes = jsonObject.getString("notes");
         String date = jsonObject.getString("date");
         String experience = jsonObject.getString("experience");
         Goal goal = new Goal(goalName, notes, date, experience);
+        l.setName(name);
         l.addGoal(goal);
     }
 }
