@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 
@@ -28,6 +29,8 @@ public class BucketListAppGUI implements ActionListener {
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu");
     LocalDate localDate = LocalDate.now();
     String date = dateFormatter.format(localDate);
+
+    DefaultListModel<String> listModel;
 
     JList<String> stringJList1 = new JList<>();
     JList<String> stringJList2 = new JList<>();
@@ -65,11 +68,13 @@ public class BucketListAppGUI implements ActionListener {
     public BucketListAppGUI() {
         frame = new JFrame("Bucket List App");
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
         frame.setVisible(true);
         initializeAllPanels();
         createWelcomePanel();
+
     }
 
     //MODIFIES: this
@@ -86,11 +91,15 @@ public class BucketListAppGUI implements ActionListener {
         textName = new JTextField(15);
         welcome.add(textName);
         JButton ok = new JButton("ok");
+        welcome.add(new JLabel(new ImageIcon("./data/helloImage.jpeg")));
         ok.addActionListener(this);
         ok.setActionCommand("ok2");
         welcome.add(ok);
     }
 
+    //MODIFIES: this
+    //EFFECTS: initializes and creates all components
+    // which are added to the main menu panel
     public void initializeMainMenu() {
         welcome.setVisible(false);
         mainMenu = new JPanel();
@@ -107,6 +116,8 @@ public class BucketListAppGUI implements ActionListener {
         addButtons(addItem, removeItem, checkOff, saveList, loadList, getSuggestion);
     }
 
+    //MODIFIES: this
+    //EFFECTS: intializes all panels
     public void initializeAllPanels() {
         addItemToList = new JPanel();
         displayList = new JPanel();
@@ -115,6 +126,8 @@ public class BucketListAppGUI implements ActionListener {
         checkOffListItem = new JPanel();
     }
 
+    //MODIFIES: this
+    //EFFECTS: creates the main menu button and sets its action command
     public void createMainMenuButton() {
         mainMenuButton = new JButton("Main menu");
         mainMenuButton.addActionListener(this);
@@ -158,7 +171,7 @@ public class BucketListAppGUI implements ActionListener {
     }
 
     //MODIFIES: this
-    //EFFECTS:
+    //EFFECTS: adds action commands to different menu buttons
     public void addActionToButton() {
         addItem.addActionListener(this);
         addItem.setActionCommand("Add");
@@ -220,7 +233,9 @@ public class BucketListAppGUI implements ActionListener {
         }
     }
 
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: is called when add item button is pressed
+    // shows instructions for how to add a goak and then calls on addGoals function
     public void addAction() {
         if (bucketL.getNumberOfItemsInList() == 0) {
             JOptionPane.showMessageDialog(mainMenu, "Enter the title of the goal you want to achieve, "
@@ -231,17 +246,17 @@ public class BucketListAppGUI implements ActionListener {
         addGoals();
     }
 
-    //EFFECTS:
+    //EFFECTS: calls on the actions for the remove button
     public void removeAction() {
         removeGoals();
     }
 
-    //EFFECTS:
+    //EFFECTS: calls on the actions connected to the check off buttons
     public void checkAction() {
         checkGoals();
     }
 
-    //EFFECTS:
+    //EFFECTS:  calls on the actions connected to the save list button
     public void saveAction() {
         saveGoals();
     }
@@ -285,13 +300,15 @@ public class BucketListAppGUI implements ActionListener {
         initializeMainMenu();
     }
 
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: action to help add suggestion user wanted to, to list and displays it
     public void ok3Action() {
         setAddSuggestion();
         addSuggestion.setVisible(false);
         displayList();
     }
 
+    //MODIFIES: this
     //EFFECTS: Sets visibility to false for all other panels except mainMenu
     public void mainMenuAction() {
         removeBucketListItem.setVisible(false);
@@ -301,16 +318,25 @@ public class BucketListAppGUI implements ActionListener {
         addSuggestion.setVisible(false);
     }
 
-    //EFFECTS:
-    public void addGoals() {
+    //MODIFIES: this
+    //EFFECTS: sets visibility for irrelevant panels to false and sets up addItemToList panel
+    public void setAddGoals() {
         addItemToList = new JPanel();
         addItemToList.setSize(500, 500);
         mainMenu.setVisible(false);
         displayList.setVisible(false);
+        checkOffListItem.setVisible(false);
         removeBucketListItem.setVisible(false);
+        addSuggestion.setVisible(false);
         frame.add(addItemToList, BorderLayout.CENTER);
         addItemToList.setVisible(true);
         addItemToList.setBackground(Color.pink);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: gets user inout for the goal and notes
+    public void addGoals() {
+        setAddGoals();
         JLabel goal = new JLabel("Enter a goal:");
         addItemToList.add(goal);
         textGoal = new JTextArea();
@@ -326,7 +352,7 @@ public class BucketListAppGUI implements ActionListener {
         newOkButton();
     }
 
-    //EFFECTS:
+    //EFFECTS: adds action command to ok button and adds it to addItemToList panel
     public void newOkButton() {
         JButton ok = new JButton("ok");
         ok.addActionListener(this);
@@ -334,9 +360,11 @@ public class BucketListAppGUI implements ActionListener {
         addItemToList.add(ok);
     }
 
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: sets irrelevant panels visibility to false and sets up the display list panel
     public void displayList() {
         removeBucketListItem.setVisible(false);
+        addSuggestion.setVisible(false);
         mainMenu.setVisible(false);
         addItemToList.setVisible(false);
         checkOffListItem.setVisible(false);
@@ -350,7 +378,8 @@ public class BucketListAppGUI implements ActionListener {
         displayListTwo();
     }
 
-    //EFFECTS:
+    //MODIFIES: this
+    //EFFECTS: adds components to the displayList panel
     public void displayListTwo() {
         JLabel bucketListDisplay = new JLabel("Here is your updated Bucket List!");
         bucketListDisplay.setFont(new Font("ComicSans", Font.BOLD, 25));
@@ -376,6 +405,7 @@ public class BucketListAppGUI implements ActionListener {
         addItemToList.setVisible(false);
         displayList.setVisible(false);
         addSuggestion.setVisible(false);
+        checkOffListItem.setVisible(false);
         frame.add(removeBucketListItem, BorderLayout.CENTER);
         removeBucketListItem.setVisible(true);
         removeBucketListItem.setBackground(Color.pink);
@@ -473,6 +503,7 @@ public class BucketListAppGUI implements ActionListener {
         addSuggestion.setSize(500, 500);
         mainMenu.setVisible(false);
         addItemToList.setVisible(false);
+        removeBucketListItem.setVisible(false);
         displayList.setVisible(false);
         checkOffListItem.setVisible(false);
         frame.add(addSuggestion, BorderLayout.CENTER);
@@ -492,7 +523,7 @@ public class BucketListAppGUI implements ActionListener {
     }
 
     //MODIFIES: this
-    //EFFECTS:
+    //EFFECTS: sets the suggestion as a new goal and adds it to the bucket list
     public void setAddSuggestion() {
         String goalName = suggestion.getRandomSuggestion();
         String notes = textNotes2.getText();
@@ -506,13 +537,13 @@ public class BucketListAppGUI implements ActionListener {
     }
 
     //MODIFIES: this
-    //EFFECTS:
+    //EFFECTS: displays all the bucketList items in a Jlist
     public void removeFunction() {
         if (bucketL.getNumberOfItemsInList() == 0) {
             JOptionPane.showMessageDialog(removeBucketListItem, "No items to remove :( Please add an item first!");
             mainMenuAction();
         }
-        DefaultListModel<String> listModel = new DefaultListModel<>();
+        DefaultListModel<String> listModel2 = new DefaultListModel<>();
         for (int i = 0; i < bucketL.getNumberOfItemsInList(); i++) {
             int listItem = i + 1;
             String listValue = "\n#" + listItem + " Date: "
@@ -521,20 +552,21 @@ public class BucketListAppGUI implements ActionListener {
                     + ("Notes: ") + (bucketL.getList().get(i)
                     .getNotes()) + ("\n")
                     + (bucketL.getList().get(i).getExperience()) + ("\n");
-            listModel.addElement(listValue);
+            listModel2.addElement(listValue);
         }
-        stringJList1.setModel(listModel);
+        stringJList1.setModel(listModel2);
         removeFunctionTwo();
     }
 
     //MODIFIES: this
-    //EFFECTS:
+    //EFFECTS: adds the list of items to be displayed to a JList where if a user
+    // double-clicks an item it is removed from the bucket list
     public void removeFunctionTwo() {
         stringJList1.setFont(new Font("ComicSans", Font.BOLD, 15));
         stringJList1.setSelectedIndex(0);
+        removeBucketListItem.add(stringJList1);
         JScrollPane scroll = new JScrollPane(stringJList1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        removeBucketListItem.add(stringJList1);
         removeBucketListItem.add(scroll);
         stringJList1.addMouseListener(new MouseAdapter() {
             @Override
@@ -554,23 +586,32 @@ public class BucketListAppGUI implements ActionListener {
         });
     }
 
-    //MODIFIES: this
-    //EFFECTS:
-    public void checkOffFunction() {
+    //EFFECTS: checks whether the bucketList has any items to check off,
+    // if it doesn't shows message and returns to main menu
+    public void ifConditionForCheckOff() {
         if (bucketL.getNumberOfItemsInList() == 0) {
             JOptionPane.showMessageDialog(checkOffListItem, "No items to check off :( Please add an item first!");
             mainMenuAction();
         }
-        DefaultListModel<String> listModel = new DefaultListModel<>();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: if the items in the bucket list are not checked off already they are displayed
+    //so user can check them off
+    public void checkOffFunction() {
+        listModel = new DefaultListModel<>();
+        ifConditionForCheckOff();
         for (int i = 0; i < bucketL.getNumberOfItemsInList(); i++) {
             int listItem = i + 1;
-            String listValue = "\n#" + listItem + " Date: "
-                    + bucketL.getList().get(i).getDate() + ("\n")
-                    + (bucketL.getList().get(i).getGoal()) + ("\n")
-                    + ("Notes: ") + (bucketL.getList().get(i)
-                    .getNotes()) + ("\n")
-                    + (bucketL.getList().get(i).getExperience()) + ("\n");
-            listModel.addElement(listValue);
+            if (Objects.equals(bucketL.getList().get(i).getExperience(), "")) {
+                String listValue = "\n#" + listItem + " Date: "
+                        + bucketL.getList().get(i).getDate() + ("\n")
+                        + (bucketL.getList().get(i).getGoal()) + ("\n")
+                        + ("Notes: ") + (bucketL.getList().get(i)
+                        .getNotes()) + ("\n")
+                        + (bucketL.getList().get(i).getExperience()) + ("\n");
+                listModel.addElement(listValue);
+            }
         }
         stringJList2.setModel(listModel);
         stringJList2.setFont(new Font("ComicSans", Font.BOLD, 15));
@@ -579,11 +620,13 @@ public class BucketListAppGUI implements ActionListener {
         JScrollPane scroll = new JScrollPane(stringJList2, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         checkOffListItem.add(scroll);
+        checkOffListItem.add(mainMenuButton);
         checkOffListAction();
     }
 
     //MODIFIES: this
-    //EFFECTS:
+    //EFFECTS: Modifies the goal clicked on to reflect that it has been
+    // "checked off" and takes in user input for date completed as well as experience
     public void checkOffListAction() {
         stringJList2.addMouseListener(new MouseAdapter() {
             @Override

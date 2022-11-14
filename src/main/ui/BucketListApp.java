@@ -185,6 +185,7 @@ public class BucketListApp {
     public void caseDQuestions() {
         System.out.println("Enter the date completed :)");
         String dateCompleted = in.nextLine();
+
         list.setDateCompleted(dateCompleted);
         System.out.println("What was your experience like?");
         String experienceNotes = in.nextLine();
