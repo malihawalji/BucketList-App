@@ -131,4 +131,10 @@ public class BucketListTest {
         assertEquals("", list.listToJson().getJSONObject(0).getString("experience"));
 
     }
+
+    @Test
+    void testSetAndGetName() {
+        list.setName("maliha");
+        assertEquals("maliha", list.getName());
+    }
 }

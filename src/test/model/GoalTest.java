@@ -57,4 +57,10 @@ class GoalTest {
         assertEquals("awesome",goal.toJson().getString("experience"));
 
     }
+
+    @Test
+    void testGoalSetAndGetName() {
+        goal.setName("maliha");
+        assertEquals("maliha", goal.getName());
+    }
 }
