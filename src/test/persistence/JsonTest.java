@@ -1,5 +1,6 @@
-package model;
+package persistence;
 
+import model.Goal;
 import org.junit.jupiter.api.Assertions;
 
 public class JsonTest {

@@ -1,10 +1,13 @@
-package model;
+package persistence;
 
 import java.io.IOException;
 import java.util.List;
 
+import model.BucketList;
+import model.Goal;
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
+import persistence.JsonTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -54,20 +57,23 @@ public class JsonReaderTest extends JsonTest {
         }
    }
 
-//   @Test
-//   void testAddList(){
-//       JsonReader reader = new JsonReader("./data/testReaderEmptyBucketList.json");
-//       Goal goal = new Goal("A", "B", "C", "D");
-//       BucketList list = new BucketList();
-//       list.addGoal(goal);
-//       reader.addList(list, goal.toJson());
-//       assertEquals("A", goal.toJson().getString("goalName"));
-//       assertEquals("B", goal.toJson().getString("notes"));
-//       assertEquals("C", goal.toJson().getString("date"));
-//       assertEquals("D", goal.toJson().getString("experience"));
-//       //reader.addLists(list, goal.toJson());
-//       //assertEquals("", goal.toJson().toString());
-//   }
+   @Test
+   void testAddList(){
+       JsonReader reader = new JsonReader("./data/testReaderEmptyBucketList.json");
+       Goal goal = new Goal("A", "B", "C", "D");
+       BucketList list = new BucketList();
+       list.addGoal(goal);
+       reader.addList(list, goal.toJson());
+       assertEquals("A", goal.toJson().getString("goalName"));
+       assertEquals("B", goal.toJson().getString("notes"));
+       assertEquals("C", goal.toJson().getString("date"));
+       assertEquals("D", goal.toJson().getString("experience"));
+       reader.addLists(list, goal.toJson());
+       assertEquals("", goal.toJson().toString());
+   }
+
+
+
 }
 
 

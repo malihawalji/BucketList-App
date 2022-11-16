@@ -1,7 +1,10 @@
-package model;
+package persistence;
 
+import model.BucketList;
+import model.Goal;
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
+import persistence.JsonTest;
 import persistence.JsonWriter;
 
 import java.io.IOException;
