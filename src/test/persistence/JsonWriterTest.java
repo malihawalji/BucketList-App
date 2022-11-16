@@ -47,9 +47,13 @@ public class JsonWriterTest extends JsonTest {
     void testWriterGeneralWorkroom() {
         try {
             BucketList bucketList = new BucketList();
-            bucketList.addGoal(new Goal("go to banff via roadtrip", "in may", "10/18/2022", ""));
-            bucketList.addGoal(new Goal("go skydiving"
-                    , "with friends next summer", "10/18/2022", ""));
+            Goal goal1 = new Goal("go to banff via roadtrip", "in may", "10/18/2022", "");
+            bucketList.addGoal(goal1);
+            Goal goal2 = new Goal("go skydiving"
+                    , "with friends next summer", "10/18/2022", "");
+            bucketList.addGoal(goal2);
+            goal1.setName("maliha");
+            goal2.setName("maliha");
             JsonWriter writer = new JsonWriter("./data/testWriterBucketListNotEmpty.json");
             writer.open();
             writer.write(bucketList);
