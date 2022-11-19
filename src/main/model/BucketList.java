@@ -45,7 +45,7 @@ public class BucketList implements Writable {
         return listOfGoals.size();
     }
 
-    public void setAnInt(int anInt) {
+    public void setAnInt(Integer anInt) {
         this.anInt = anInt - 1;
     }
 

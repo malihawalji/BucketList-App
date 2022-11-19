@@ -57,22 +57,21 @@ public class JsonReaderTest extends JsonTest {
         }
    }
 
-   @Test
-   void testAddList() throws IOException {
-       JsonReader reader = new JsonReader("./data/testReaderBucketListNotEmpty.json");
-       BucketList bucketList = reader.read();
-       List<Goal> listOfGoals = bucketList.getList();
-       //reader.addList(bucketList, listOfGoals.get(0).toJson());
-       //list.addGoal(goal);
-       //reader.addList(list, goal.toJson());
-//       assertEquals("A", goal.toJson().getString("goalName"));
-//       assertEquals("B", goal.toJson().getString("notes"));
-//       assertEquals("C", goal.toJson().getString("date"));
-//       assertEquals("D", goal.toJson().getString("experience"));
-//       reader.addLists(list, goal.toJson());
-//       assertEquals("", goal.toJson().toString());
-   }
-
+//   @Test
+//   void testAddList() throws IOException {
+//       JsonReader reader = new JsonReader("./data/testReaderBucketListNotEmpty.json");
+//       BucketList bucketList = reader.read();
+//       List<Goal> listOfGoals = bucketList.getList();
+//       //reader.addList(bucketList, listOfGoals.get(0).toJson());
+//       //list.addGoal(goal);
+//       //reader.addList(list, goal.toJson());
+////       assertEquals("A", goal.toJson().getString("goalName"));
+////       assertEquals("B", goal.toJson().getString("notes"));
+////       assertEquals("C", goal.toJson().getString("date"));
+////       assertEquals("D", goal.toJson().getString("experience"));
+////       reader.addLists(list, goal.toJson());
+////       assertEquals("", goal.toJson().toString());
+//   }
 
 }
 

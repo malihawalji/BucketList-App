@@ -68,6 +68,7 @@ public class JsonReader {
         String experience = jsonObject.getString("experience");
         Goal goal = new Goal(goalName, notes, date, experience);
         l.setName(name);
+        goal.setName(name);
         l.addGoal(goal);
     }
 }
