@@ -64,6 +64,8 @@ public class BucketListAppGUI implements ActionListener {
     private JLabel getName;
     protected JTextField textName;
 
+    private ImageIcon imageIcon;
+
     private JTextArea textGoal;
     private JTextArea textNotes;
     private JTextField textNotes2;
@@ -83,7 +85,7 @@ public class BucketListAppGUI implements ActionListener {
             public void windowClosing(WindowEvent e) {
                 if (bucketL.getList().size() > 0) {
                     int yesNO = JOptionPane.showConfirmDialog(frame, "Would you like to save your list before you go?",
-                            null, JOptionPane.YES_NO_OPTION, QUESTION_MESSAGE);
+                            "Goodbye!", JOptionPane.YES_NO_OPTION, QUESTION_MESSAGE, imageIcon);
 
                     if (yesNO == JOptionPane.YES_OPTION) {
                         saveAction();
@@ -161,8 +163,8 @@ public class BucketListAppGUI implements ActionListener {
         mainMenu = new JPanel();
         mainMenu.setSize(600, 600);
         frame.add(mainMenu, BorderLayout.CENTER);
-        BoxLayout boxLayout = new BoxLayout(mainMenu, BoxLayout.Y_AXIS);
-        mainMenu.setLayout(boxLayout);
+        BoxLayout boxLayout2 = new BoxLayout(mainMenu, BoxLayout.Y_AXIS);
+        mainMenu.setLayout(boxLayout2);
         mainMenu.setBorder(new EmptyBorder(new Insets(150, 150, 150, 150)));
         mainMenu.setBackground(backgroundColor);
         JLabel mainMenuLabel = new JLabel("Main Menu Options");
@@ -306,10 +308,11 @@ public class BucketListAppGUI implements ActionListener {
     // shows instructions for how to add a goak and then calls on addGoals function
     public void addAction() {
         if (bucketL.getNumberOfItemsInList() == 0) {
-            JOptionPane.showMessageDialog(mainMenu, "Enter the title of the goal you want to achieve, "
+            JOptionPane.showConfirmDialog(mainMenu, "Enter the title of the goal you want to achieve, "
                     + "\nclick suggestion in main menu to get suggestions "
                     + "\nNotes ex: when I want to complete it,"
-                    + " \nwhere, why, with etc :)", "Instructions", JOptionPane.INFORMATION_MESSAGE);
+                    + " \nwhere, why, with etc :)", "Instructions", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, imageIcon);
         }
         addGoals();
     }
@@ -342,8 +345,10 @@ public class BucketListAppGUI implements ActionListener {
     //MODIFIES: this
     //EFFECTS: adds user input goal to list
     public void okActionAddsGoal() {
-        JOptionPane.showMessageDialog(addItemToList, "'"
-                + textGoal.getText() + "'" + " Was added to your list");
+        JOptionPane.showConfirmDialog(addItemToList, "'"
+                + textGoal.getText() + "'" + " Was added to your list", "Added Goal",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, imageIcon);
         String goalName = textGoal.getText();
         String notes = textNotes.getText();
         String name = textName.getText();
@@ -354,18 +359,25 @@ public class BucketListAppGUI implements ActionListener {
         goal.setDate(date);
         goal.setExperience(experience);
         goal.setName(name);
+        bucketL.setName(name);
         bucketL.addGoal(goal);
         displayList();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates an image icon of a flower
+    public void createImageIconFlower() {
+        imageIcon = new ImageIcon("./data/flowerIcon.jpeg");
+        Image image = imageIcon.getImage();
+        Image newimg = image.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(newimg);
     }
 
     //MODIFIES: this
     //EFFECTS: sets name field to user input, displays welcome message
     // and calls function to initialize main menu
     public void ok2Action() {
-        ImageIcon imageIcon = new ImageIcon("./data/flowerIcon.jpeg");
-        Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
-        imageIcon = new ImageIcon(newimg);
+        createImageIconFlower();
         String name = textName.getText();
         bucketL.setName(name);
         UIManager uiManager = new UIManager();
@@ -441,8 +453,8 @@ public class BucketListAppGUI implements ActionListener {
         notes.setFont(new Font("ComicSans", BOLD, 20));
         addItemToList.add(notes);
         addItemToList.add(textNotes);
-        BoxLayout boxLayout = new BoxLayout(addItemToList, BoxLayout.Y_AXIS);
-        addItemToList.setLayout(boxLayout);
+        BoxLayout boxLayout3 = new BoxLayout(addItemToList, BoxLayout.Y_AXIS);
+        addItemToList.setLayout(boxLayout3);
         newOkButton();
     }
 
@@ -470,8 +482,8 @@ public class BucketListAppGUI implements ActionListener {
         frame.add(displayList, BorderLayout.CENTER);
         displayList.setVisible(true);
         displayList.setBackground(backgroundColor);
-        BoxLayout boxLayout = new BoxLayout(displayList, BoxLayout.Y_AXIS);
-        displayList.setLayout(boxLayout);
+        BoxLayout boxLayout4 = new BoxLayout(displayList, BoxLayout.Y_AXIS);
+        displayList.setLayout(boxLayout4);
         displayListTwo();
     }
 
@@ -510,8 +522,8 @@ public class BucketListAppGUI implements ActionListener {
         JLabel remove = new JLabel("Double click the goal you would like to remove");
         remove.setFont(new Font("ComicSans", BOLD, 15));
         removeBucketListItem.add(remove);
-        BoxLayout boxLayout = new BoxLayout(removeBucketListItem, BoxLayout.Y_AXIS);
-        removeBucketListItem.setLayout(boxLayout);
+        BoxLayout boxLayout5 = new BoxLayout(removeBucketListItem, BoxLayout.Y_AXIS);
+        removeBucketListItem.setLayout(boxLayout5);
         removeFunction();
     }
 
@@ -529,8 +541,8 @@ public class BucketListAppGUI implements ActionListener {
         frame.add(checkOffListItem, BorderLayout.CENTER);
         checkOffListItem.setVisible(true);
         checkOffListItem.setBackground(backgroundColor);
-        BoxLayout boxLayout = new BoxLayout(checkOffListItem, BoxLayout.Y_AXIS);
-        checkOffListItem.setLayout(boxLayout);
+        BoxLayout boxLayout6 = new BoxLayout(checkOffListItem, BoxLayout.Y_AXIS);
+        checkOffListItem.setLayout(boxLayout6);
         JLabel check = new JLabel("After entering date completed and experience");
         JLabel check2 = new JLabel("Double click the item you would like to check off");
         check.setFont(new Font("ComicSans", BOLD, 15));
@@ -554,7 +566,9 @@ public class BucketListAppGUI implements ActionListener {
             jsonWriter.open();
             jsonWriter.write(bucketL);
             jsonWriter.close();
-            JOptionPane.showMessageDialog(mainMenu, "Saved " + bucketL.getName() + "'s Bucket List to " + jsonStore);
+            JOptionPane.showConfirmDialog(mainMenu, "Saved " + bucketL.getName()
+                    + "'s Bucket List to " + jsonStore, "Saved", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, imageIcon);
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(mainMenu, "Unable to write to file: " + jsonStore);
         } catch (IOException e) {
@@ -567,6 +581,9 @@ public class BucketListAppGUI implements ActionListener {
     //MODIFIES: this
     //EFFECTS: loads list from jsonStore
     public void loadGoals() {
+        if (bucketL.getName() == null) {
+            bucketL.setName(textName.getText());
+        }
         jsonStore = "./data/" + bucketL.getName() + "bucketList.json";
         JsonReader jsonReader = new JsonReader(jsonStore);
         if (jsonStore.contains(bucketL.getName())) {
@@ -576,8 +593,9 @@ public class BucketListAppGUI implements ActionListener {
                     bucketL2.addGoal(bucketL.getList().get(intI));
                 }
                 bucketL = bucketL2;
-                JOptionPane.showMessageDialog(mainMenu,"Loaded " + bucketL.getName()
-                        + "'s Bucket List from" + jsonStore);
+                JOptionPane.showConfirmDialog(mainMenu,"Loaded " + bucketL.getName()
+                        + "'s Bucket List from" + jsonStore, "Loaded", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, imageIcon);
             } catch (IOException e) {
                 name = JOptionPane.showInputDialog("Unable to read from file: " + jsonStore
                         + "\nfile may not exist, try typing in your name again: ");
@@ -596,7 +614,7 @@ public class BucketListAppGUI implements ActionListener {
         int yesNO = JOptionPane.showConfirmDialog(mainMenu, "Add "
                         + suggestion.getRandomSuggestion()
                         + " to your bucket list?",
-                null, JOptionPane.YES_NO_OPTION, QUESTION_MESSAGE);
+                "Goal suggestion", JOptionPane.YES_NO_OPTION, QUESTION_MESSAGE, imageIcon);
 
         if (yesNO == JOptionPane.YES_OPTION) {
             addSuggestionToList();
@@ -610,6 +628,7 @@ public class BucketListAppGUI implements ActionListener {
         addSuggestion.setVisible(false);
         addSuggestion = new JPanel();
         addSuggestion.setSize(600, 600);
+        welcome.setVisible(false);
         mainMenu.setVisible(false);
         addItemToList.setVisible(false);
         removeBucketListItem.setVisible(false);
@@ -628,8 +647,8 @@ public class BucketListAppGUI implements ActionListener {
         ok.addActionListener(this);
         ok.setActionCommand("ok3");
         addSuggestion.add(ok);
-        BoxLayout boxLayout = new BoxLayout(addSuggestion, BoxLayout.Y_AXIS);
-        addItemToList.setLayout(boxLayout);
+        BoxLayout boxLayout7 = new BoxLayout(addSuggestion, BoxLayout.Y_AXIS);
+        addItemToList.setLayout(boxLayout7);
     }
 
     //MODIFIES: this
@@ -643,6 +662,8 @@ public class BucketListAppGUI implements ActionListener {
         goal.setNotes(notes);
         goal.setDate(date);
         goal.setExperience(experience);
+        goal.setName(name);
+        bucketL.setName(name);
         bucketL.addGoal(goal);
     }
 
@@ -650,7 +671,10 @@ public class BucketListAppGUI implements ActionListener {
     //EFFECTS: displays all the bucketList items in a Jlist
     public void removeFunction() {
         if (bucketL.getNumberOfItemsInList() == 0) {
-            JOptionPane.showMessageDialog(removeBucketListItem, "No items to remove :( Please add an item first!");
+            JOptionPane.showConfirmDialog(removeBucketListItem,
+                    "No items to remove :( Please add an item first!", "Empty List",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, imageIcon);
             mainMenuAction();
         }
         DefaultListModel<String> listModel2 = new DefaultListModel<>();
@@ -689,7 +713,10 @@ public class BucketListAppGUI implements ActionListener {
 
                     Object item = target.getModel().getElementAt(index);
                     bucketL.getGoalItemToRemove();
-                    JOptionPane.showMessageDialog(removeBucketListItem, "Removed: \n" + item.toString());
+
+                    JOptionPane.showConfirmDialog(removeBucketListItem, "Removed: \n" + item.toString(),
+                            "Removed Goal", JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE, imageIcon);
                     displayList();
 
                 }
@@ -701,7 +728,10 @@ public class BucketListAppGUI implements ActionListener {
     // if it doesn't shows message and returns to main menu
     public void ifConditionForCheckOff() {
         if (bucketL.getNumberOfItemsInList() == 0) {
-            JOptionPane.showMessageDialog(checkOffListItem, "No items to check off :( Please add an item first!");
+
+            JOptionPane.showConfirmDialog(checkOffListItem,
+                    "No items to check off :( Please add an item first!", "Empty List", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, imageIcon);
             mainMenuAction();
         }
     }
@@ -710,7 +740,8 @@ public class BucketListAppGUI implements ActionListener {
     //EFFECTS: creates all labels and their corresponding
     // textFields for checkOff function
     public void labelsForCheckOffFunction() {
-        JLabel dateCompletedLabel = new JLabel("Enter the date completed:");
+        JLabel dateCompletedLabel = new JLabel("Enter the date completed "
+                + "(format - MM/dd/uuuu):");
         dateCompletedLabel.setFont(new Font("ComicSans", BOLD, 15));
         dateCompleted = new JTextField(15);
         checkOffListItem.add(dateCompletedLabel);
