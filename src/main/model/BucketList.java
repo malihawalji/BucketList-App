@@ -39,6 +39,7 @@ public class BucketList implements Writable {
     //EFFECTS: adds Goal item to listOfGoals
     public void addGoal(Goal goal) {
         listOfGoals.add(goal);
+        EventLog.getInstance().logEvent(new Event("goal added to bucket list"));
     }
 
     public int getNumberOfItemsInList() {
@@ -64,6 +65,7 @@ public class BucketList implements Writable {
     //EFFECTS: removes item from listOfGoals
     public void getGoalItemToRemove() {
         listOfGoals.remove(anInt);
+        EventLog.getInstance().logEvent(new Event("goal removed from bucket list"));
     }
 
     //REQUIRES: index exists, listOfGoals.size() > 0, item isn't already checked off
@@ -75,6 +77,7 @@ public class BucketList implements Writable {
         setExperienceNotes(listOfGoals.get(anInt).getExperience() + "Experience: " + getExperienceNotes());
         listOfGoals.get(anInt).setGoal(newGoalName);
         listOfGoals.get(anInt).setExperience(experienceNotes);
+        EventLog.getInstance().logEvent(new Event("goal checked off!"));
     }
 
     public void setDateCompleted(String dateCompleted) {
@@ -122,6 +125,7 @@ public class BucketList implements Writable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("list of goals", this.listToJson());
+        EventLog.getInstance().logEvent(new Event("saved bucket list"));
         return json;
     }
 

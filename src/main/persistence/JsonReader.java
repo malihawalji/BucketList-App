@@ -1,5 +1,7 @@
 package persistence;
 
+import model.Event;
+import model.EventLog;
 import model.Goal;
 import model.BucketList;
 import org.json.JSONArray;

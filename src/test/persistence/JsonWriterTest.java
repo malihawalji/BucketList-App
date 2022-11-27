@@ -27,7 +27,7 @@ public class JsonWriterTest extends JsonTest {
     }
 
     @Test
-    void testWriterEmptyWorkroom() {
+    void testWriterEmptyList() {
         try {
             BucketList bucketList = new BucketList();
             JsonWriter writer = new JsonWriter("./data/testWriterEmptyList.json");
@@ -44,7 +44,7 @@ public class JsonWriterTest extends JsonTest {
     }
 
     @Test
-    void testWriterGeneralWorkroom() {
+    void testWriterNotEmptyList() {
         try {
             BucketList bucketList = new BucketList();
             Goal goal1 = new Goal("go to banff via roadtrip", "in may", "10/18/2022", "");

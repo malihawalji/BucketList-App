@@ -1,8 +1,9 @@
 package ui;
 
-import model.BucketList;
-import model.Goal;
-import model.Suggestion;
+import model.*;
+import model.Event;
+import persistence.JsonLoginReader;
+import persistence.JsonLoginWriter;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -16,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.awt.Component.CENTER_ALIGNMENT;
@@ -27,6 +30,7 @@ import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 //by through removing or checking goals as completed
 public class BucketListAppGUI implements ActionListener {
     protected String jsonStore;
+    protected String jsonLoginStore;
     private String name;
     BucketList bucketL = new BucketList();
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu");
@@ -59,9 +63,12 @@ public class BucketListAppGUI implements ActionListener {
     private JButton loadList;
     private JButton getSuggestion;
     private JButton mainMenuButton;
+    private JButton newUser;
 
     private JLabel welcomeLabel;
     private JLabel getName;
+    private JLabel enterPassword;
+    private JLabel enterUsername;
     protected JTextField textName;
 
     private ImageIcon imageIcon;
@@ -71,15 +78,20 @@ public class BucketListAppGUI implements ActionListener {
     private JTextField textNotes2;
     private JTextField dateCompleted;
     private JTextField experienceNotes;
+    private JTextField textUserName;
+    private JTextField textPassword;
     private String dateCompletedString;
     private String experienceNotesString;
+
+    Logins logins;
+    Map<Login,String> usersInformation;
 
     //MODIFIES: this
     //EFFECTS: Constructor initializes the main frame for the GUI,
     // and calls on the methods to initialize all the action panels and the welcome panel
     public BucketListAppGUI() {
         frame = new JFrame("Bucket List App");
-        frame.setLocationRelativeTo(null);
+        //frame.setLocationRelativeTo(null);
         WindowListener windowListener = new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -91,14 +103,55 @@ public class BucketListAppGUI implements ActionListener {
                         saveAction();
                     }
                 }
+                EventLog el = EventLog.getInstance();
+                    for (Event next : el) {
+                        System.out.println(next.toString() + "\n\n");
+                    }
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
         };
         frame.addWindowListener(windowListener);
         frame.setSize(600, 600);
+        loadUserLogins();
         initializeAllPanels();
-        createWelcomePanel();
         frame.setVisible(true);
+    }
+
+    public void loadUserLogins() {
+        jsonLoginStore = "./data/loginInfo.json";
+        JsonLoginReader jsonLoginReader = new JsonLoginReader(jsonLoginStore);
+        try {
+            logins = jsonLoginReader.readLogin();
+            usersInformation = logins.getLoginInfo();
+        } catch (IOException e) {
+                //
+        }
+    }
+
+    public void getUser(String userName, String password) {
+//        if (logins.userNamePasswordExists(userName, password)) {
+//            String name = textName.getText();
+//            bucketL.setName(name);
+//        } else {
+//            JOptionPane.showMessageDialog(welcome, "Sorry, incorrect username or password");
+//            createWelcomePanel();
+//        }
+    }
+
+
+    public void saveUserLogins() {
+        jsonLoginStore = "./data/loginInfo.json";
+        try {
+            JsonLoginWriter jsonLoginWriter = new JsonLoginWriter(jsonLoginStore);
+            jsonLoginWriter.open();
+            jsonLoginWriter.write(logins);
+            jsonLoginWriter.close();
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(mainMenu, "Unable to write to file: " + jsonStore);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //MODIFIES: this
@@ -109,13 +162,23 @@ public class BucketListAppGUI implements ActionListener {
         textName.setPreferredSize(new Dimension(25,15));
         textName.setMaximumSize(textName.getPreferredSize());
         textName.setAlignmentX(CENTER_ALIGNMENT);
+        textUserName = new JTextField(15);
+        textUserName.setSize(25, 20);
+        textUserName.setPreferredSize(new Dimension(25,15));
+        textUserName.setMaximumSize(textName.getPreferredSize());
+        textUserName.setAlignmentX(CENTER_ALIGNMENT);
+        textPassword = new JTextField(15);
+        textPassword.setSize(25, 20);
+        textPassword.setPreferredSize(new Dimension(25,15));
+        textPassword.setMaximumSize(textName.getPreferredSize());
+        textPassword.setAlignmentX(CENTER_ALIGNMENT);
         welcome.add(textName);
     }
 
     //MODIFIES: this
     //EFFECTS: initializes new JPanel and adds components
     public void initializeWelcome() {
-        //welcome.setVisible(false);
+        welcome.setVisible(false);
         welcome = new JPanel();
         frame.add(welcome, BorderLayout.CENTER);
         welcome.setSize(600, 600);
@@ -124,6 +187,19 @@ public class BucketListAppGUI implements ActionListener {
         welcomeLabel.setForeground(new Color(56, 13, 103, 153));
         getName = new JLabel("Please enter your name: ");
         getName.setForeground(new Color(56, 13, 103, 153));
+        enterUsername = new JLabel("Please enter your userName: ");
+        enterUsername.setForeground(new Color(56, 13, 103, 153));
+        enterUsername.setFont(new Font("ComicSans", BOLD, 16));
+        enterPassword = new JLabel("Please enter your password: ");
+        enterPassword.setForeground(new Color(56, 13, 103, 153));
+        enterPassword.setFont(new Font("ComicSans", BOLD, 16));
+        getName.setFont(new Font("ComicSans", BOLD, 16));
+        welcomeLabel.setFont(new Font("ComicSans", BOLD, 25));
+        welcomeLabel.setAlignmentX(CENTER_ALIGNMENT);
+        welcome.add(welcomeLabel);
+        enterPassword.setAlignmentX(CENTER_ALIGNMENT);
+        enterUsername.setAlignmentX(CENTER_ALIGNMENT);
+
     }
 
     //MODIFIES: this
@@ -131,10 +207,6 @@ public class BucketListAppGUI implements ActionListener {
     // once user presses ok button triggers action
     public void createWelcomePanel() {
         initializeWelcome();
-        getName.setFont(new Font("ComicSans", BOLD, 18));
-        welcomeLabel.setFont(new Font("ComicSans", BOLD, 25));
-        welcomeLabel.setAlignmentX(CENTER_ALIGNMENT);
-        welcome.add(welcomeLabel);
         ImageIcon imageIcon = new ImageIcon("./data/bucketListPhoto.jpeg");
         Image image = imageIcon.getImage();
         Image newimg = image.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
@@ -145,9 +217,18 @@ public class BucketListAppGUI implements ActionListener {
         getName.setAlignmentX(CENTER_ALIGNMENT);
         welcome.add(getName);
         initializeTextFieldsForWelcome();
+        //welcome.add(enterUsername);
+        //welcome.add(textUserName);
+        //welcome.add(enterPassword);
+        //welcome.add(textPassword);
         JButton ok = new JButton("ok");
+        newUser = new JButton("new user");
+        newUser.addActionListener(this);
+        newUser.setActionCommand("newUser");
         ok.setAlignmentX(CENTER_ALIGNMENT);
+        newUser.setAlignmentX(CENTER_ALIGNMENT);
         welcome.add(ok);
+        //welcome.add(newUser);
         BoxLayout boxLayout = new BoxLayout(welcome, BoxLayout.Y_AXIS);
         welcome.setLayout(boxLayout);
         welcome.setVisible(true);
@@ -181,12 +262,14 @@ public class BucketListAppGUI implements ActionListener {
     //EFFECTS: intializes all panels
     public void initializeAllPanels() {
         welcome = new JPanel();
+        mainMenu = new JPanel();
         kk = new JOptionPane();
         addItemToList = new JPanel();
         displayList = new JPanel();
         addSuggestion = new JPanel();
         removeBucketListItem = new JPanel();
         checkOffListItem = new JPanel();
+        createWelcomePanel();
     }
 
     //MODIFIES: this
@@ -300,6 +383,25 @@ public class BucketListAppGUI implements ActionListener {
             case "ok3":
                 ok3Action();
                 break;
+            case "newUser":
+                newUser();
+        }
+    }
+
+    public void newUser() {
+        String name = JOptionPane.showInputDialog(welcome, "enter your name");
+        String username = JOptionPane.showInputDialog(welcome, "enter what you'd like your username to be");
+        String password = JOptionPane.showInputDialog(welcome, "enter what you'd like your password to be");
+        if (!logins.userNameAlreadyExists(username)) {
+            Login login = new Login(username, password);
+            logins.addLogin(login, name);
+            saveUserLogins();
+            bucketL.setName(name);
+            JOptionPane.showMessageDialog(welcome, "welcome " + name + "! lets get started");
+            mainMenuAction();
+        } else {
+            JOptionPane.showMessageDialog(welcome, "username already exists :(");
+            newUser();
         }
     }
 
@@ -377,16 +479,17 @@ public class BucketListAppGUI implements ActionListener {
     //EFFECTS: sets name field to user input, displays welcome message
     // and calls function to initialize main menu
     public void ok2Action() {
+        String username = textUserName.getText();
+        String password = textPassword.getText();
+//        getUser(username, password);
         createImageIconFlower();
-        String name = textName.getText();
-        bucketL.setName(name);
         UIManager uiManager = new UIManager();
         uiManager.put("OptionPane.background()", new ColorUIResource(255, 212, 240));
         uiManager.put("Panel.background", new ColorUIResource(255, 212, 240));
-        JOptionPane.showConfirmDialog(welcome, "Hi " + bucketL.getName()
+        JOptionPane.showConfirmDialog(welcome, "Hi " + textName.getText()
                 + " let's get Started", "Welcome!", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE, imageIcon);
-        initializeMainMenu();
+        loadGoals();
     }
 
     //MODIFIES: this
@@ -400,6 +503,7 @@ public class BucketListAppGUI implements ActionListener {
     //MODIFIES: this
     //EFFECTS: Sets visibility to false for all other panels except mainMenu
     public void mainMenuAction() {
+        initializeMainMenu();
         removeBucketListItem.setVisible(false);
         displayList.setVisible(false);
         checkOffListItem.setVisible(false);
@@ -470,6 +574,7 @@ public class BucketListAppGUI implements ActionListener {
     //MODIFIES: this
     //EFFECTS: sets irrelevant panels visibility to false and sets up the display list panel
     public void displayList() {
+        welcome.setVisible(false);
         kk.setVisible(false);
         displayList.setVisible(false);
         removeBucketListItem.setVisible(false);
@@ -492,11 +597,13 @@ public class BucketListAppGUI implements ActionListener {
     public void displayListTwo() {
         JLabel bucketListDisplay = new JLabel("Here is your updated Bucket List!");
         bucketListDisplay.setFont(new Font("ComicSans", BOLD, 25));
+        bucketListDisplay.setForeground(new Color(56, 13, 103, 153));
         displayList.add(bucketListDisplay);
         JTextArea listOfGoals = new JTextArea();
         listOfGoals.setBackground(backgroundColor);
         listOfGoals.setText(bucketL.getBucketList());
         listOfGoals.setFont(new Font("ComicSans", BOLD, 15));
+        listOfGoals.setForeground(new Color(28, 6, 54, 255));
         displayList.add(listOfGoals);
         JScrollPane scroll = new JScrollPane(listOfGoals, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -555,8 +662,8 @@ public class BucketListAppGUI implements ActionListener {
     //MODIFIES: this
     //EFFECTS: saves list to jsonStore
     public void saveGoals() {
-        File file = new File("./data/" + bucketL.getName() + "bucketList.json");
-        jsonStore = "./data/" + bucketL.getName() + "bucketList.json";
+        File file = new File("./data/" + textName.getText() + "bucketList.json");
+        jsonStore = "./data/" + textName.getText() + "bucketList.json";
         try {
             boolean fileCreated = file.createNewFile();
             if (fileCreated) {
@@ -648,7 +755,7 @@ public class BucketListAppGUI implements ActionListener {
         ok.setActionCommand("ok3");
         addSuggestion.add(ok);
         BoxLayout boxLayout7 = new BoxLayout(addSuggestion, BoxLayout.Y_AXIS);
-        addItemToList.setLayout(boxLayout7);
+        addSuggestion.setLayout(boxLayout7);
     }
 
     //MODIFIES: this
@@ -794,7 +901,7 @@ public class BucketListAppGUI implements ActionListener {
         checkOffListAction();
     }
 
-    //MODIFIES: this
+    //MODIFIES: this, goal
     //EFFECTS: Modifies the goal clicked on to reflect that it has been
     // "checked off" and takes in user input for date completed as well as experience
     public void checkOffListAction() {

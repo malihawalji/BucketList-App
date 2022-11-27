@@ -1,0 +1,30 @@
+{"User info": [
+    {
+        "name": "maliha",
+        "login": {
+            "password": "cookie161",
+            "userName": "loveBunnies"
+        }
+    },
+    {
+        "name": "sakina",
+        "login": {
+            "password": "1234",
+            "userName": "swalji16"
+        }
+    },
+    {
+        "name": "amy",
+        "login": {
+            "password": "123",
+            "userName": "a"
+        }
+    },
+    {
+        "name": "zaahid",
+        "login": {
+            "password": "345",
+            "userName": "b"
+        }
+    }
+]}

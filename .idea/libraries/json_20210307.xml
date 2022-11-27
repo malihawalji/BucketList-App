@@ -2,8 +2,10 @@
   <library name="json-20210307">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../Downloads/json-20210307.jar!/" />
+      <root url="file://$PROJECT_DIR$/../Downloads/jar_files" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../Downloads/jar_files" recursive="false" />
   </library>
 </component>
