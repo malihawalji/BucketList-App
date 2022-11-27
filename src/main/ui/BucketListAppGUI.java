@@ -2,8 +2,6 @@ package ui;
 
 import model.*;
 import model.Event;
-import persistence.JsonLoginReader;
-import persistence.JsonLoginWriter;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -30,7 +28,6 @@ import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 //by through removing or checking goals as completed
 public class BucketListAppGUI implements ActionListener {
     protected String jsonStore;
-    protected String jsonLoginStore;
     private String name;
     BucketList bucketL = new BucketList();
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu");
@@ -83,8 +80,6 @@ public class BucketListAppGUI implements ActionListener {
     private String dateCompletedString;
     private String experienceNotesString;
 
-    Logins logins;
-    Map<Login,String> usersInformation;
 
     //MODIFIES: this
     //EFFECTS: Constructor initializes the main frame for the GUI,
@@ -112,47 +107,10 @@ public class BucketListAppGUI implements ActionListener {
         };
         frame.addWindowListener(windowListener);
         frame.setSize(600, 600);
-        loadUserLogins();
         initializeAllPanels();
         frame.setVisible(true);
     }
 
-    public void loadUserLogins() {
-        jsonLoginStore = "./data/loginInfo.json";
-        JsonLoginReader jsonLoginReader = new JsonLoginReader(jsonLoginStore);
-        try {
-            logins = jsonLoginReader.readLogin();
-            usersInformation = logins.getLoginInfo();
-        } catch (IOException e) {
-                //
-        }
-    }
-
-    public void getUser(String userName, String password) {
-//        if (logins.userNamePasswordExists(userName, password)) {
-//            String name = textName.getText();
-//            bucketL.setName(name);
-//        } else {
-//            JOptionPane.showMessageDialog(welcome, "Sorry, incorrect username or password");
-//            createWelcomePanel();
-//        }
-    }
-
-
-    public void saveUserLogins() {
-        jsonLoginStore = "./data/loginInfo.json";
-        try {
-            JsonLoginWriter jsonLoginWriter = new JsonLoginWriter(jsonLoginStore);
-            jsonLoginWriter.open();
-            jsonLoginWriter.write(logins);
-            jsonLoginWriter.close();
-
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(mainMenu, "Unable to write to file: " + jsonStore);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     //MODIFIES: this
     //EFFECTS: initializes the textFields for the welcomePanel
@@ -383,27 +341,9 @@ public class BucketListAppGUI implements ActionListener {
             case "ok3":
                 ok3Action();
                 break;
-            case "newUser":
-                newUser();
         }
     }
 
-    public void newUser() {
-        String name = JOptionPane.showInputDialog(welcome, "enter your name");
-        String username = JOptionPane.showInputDialog(welcome, "enter what you'd like your username to be");
-        String password = JOptionPane.showInputDialog(welcome, "enter what you'd like your password to be");
-        if (!logins.userNameAlreadyExists(username)) {
-            Login login = new Login(username, password);
-            logins.addLogin(login, name);
-            saveUserLogins();
-            bucketL.setName(name);
-            JOptionPane.showMessageDialog(welcome, "welcome " + name + "! lets get started");
-            mainMenuAction();
-        } else {
-            JOptionPane.showMessageDialog(welcome, "username already exists :(");
-            newUser();
-        }
-    }
 
     //MODIFIES: this
     //EFFECTS: is called when add item button is pressed
