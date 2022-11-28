@@ -6,8 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EventTest {
 
@@ -16,6 +15,7 @@ public class EventTest {
     private Event remove;
     private Event check;
     private Event load;
+    private Event load2;
     private Event toad;
     private Date d;
 
@@ -58,10 +58,18 @@ public class EventTest {
     public void testEqualsAndHashcode() {
         d = Calendar.getInstance().getTime();
         load = new Event("goals loaded from saved bucket list");
+        load2 = new Event("goals loaded from saved bucket list");
+        load2.getDate().setTime(d.getTime());
         load.getDate().setTime(d.getTime());
-        toad = new Event("goals loaded from saved bucket list");
-        toad.getDate().setTime(d.getTime());
-        assertTrue(load.equals(toad));
-        assertTrue(load.hashCode() == toad.hashCode());
+        assertTrue(load.equals(load2));
+        assertTrue(load.hashCode() == load2.hashCode());
+    }
+
+    @Test
+    public void testEqualsAndHashcodeFalse() {
+        load = new Event("goals loaded from saved bucket list");
+        toad = new Event("TOAD");
+        assertFalse(load.equals(toad));
+        assertFalse(load.hashCode() == toad.hashCode());
     }
 }
