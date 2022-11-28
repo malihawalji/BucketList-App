@@ -2,10 +2,12 @@ package model;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventTest {
 
@@ -14,6 +16,7 @@ public class EventTest {
     private Event remove;
     private Event check;
     private Event load;
+    private Event toad;
     private Date d;
 
     @Test
@@ -38,6 +41,9 @@ public class EventTest {
     @Test
     public void testEventLoad() {
         load = new Event("goals loaded from saved bucket list");
+        d = Calendar.getInstance().getTime();
+        assertEquals(d.toInstant().truncatedTo(ChronoUnit.SECONDS),
+                load.getDate().toInstant().truncatedTo(ChronoUnit.SECONDS));
         assertEquals("goals loaded from saved bucket list" , load.getDescription());
     }
 
@@ -47,5 +53,15 @@ public class EventTest {
         add = new Event("goal added to bucket list");
         assertEquals(d.toString() + "\n" + "goal added to bucket list", add.toString());
     }
-    //iloveyousomuchmaliha
+
+    @Test
+    public void testEqualsAndHashcode() {
+        d = Calendar.getInstance().getTime();
+        load = new Event("goals loaded from saved bucket list");
+        load.getDate().setTime(d.getTime());
+        toad = new Event("goals loaded from saved bucket list");
+        toad.getDate().setTime(d.getTime());
+        assertTrue(load.equals(toad));
+        assertTrue(load.hashCode() == toad.hashCode());
+    }
 }
