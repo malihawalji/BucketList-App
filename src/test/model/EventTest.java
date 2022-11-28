@@ -18,6 +18,7 @@ public class EventTest {
     private Event load2;
     private Event toad;
     private Event nullE;
+    private BucketList bl = new BucketList();
     private Date d;
 
     @Test
@@ -74,5 +75,6 @@ public class EventTest {
         assertFalse(load.hashCode() == toad.hashCode());
         assertFalse(load.equals(nullE));
         assertFalse(load.equals(d));
+        assertFalse(load.getClass().equals(bl.getClass()));
     }
 }
