@@ -17,6 +17,7 @@ public class EventTest {
     private Event load;
     private Event load2;
     private Event toad;
+    private Event nullE;
     private Date d;
 
     @Test
@@ -71,5 +72,7 @@ public class EventTest {
         toad = new Event("TOAD");
         assertFalse(load.equals(toad));
         assertFalse(load.hashCode() == toad.hashCode());
+        assertFalse(load.equals(nullE));
+        assertFalse(load.equals(d));
     }
 }
