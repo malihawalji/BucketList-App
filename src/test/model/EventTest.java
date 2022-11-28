@@ -70,11 +70,13 @@ public class EventTest {
     @Test
     public void testEqualsAndHashcodeFalse() {
         load = new Event("goals loaded from saved bucket list");
+        load2 = new Event("goals loaded from saved bucket list");
+        assertFalse(load.equals(load2));
         toad = new Event("TOAD");
         assertFalse(load.equals(toad));
         assertFalse(load.hashCode() == toad.hashCode());
         assertFalse(load.equals(nullE));
         assertFalse(load.equals(d));
-        assertFalse(load.getClass().equals(bl.getClass()));
+        assertFalse(load.equals(bl.getClass()));
     }
 }
