@@ -78,9 +78,9 @@ public class EventTest {
         assertFalse(load.equals(nullE));
         assertFalse(load.equals(d));
         assertFalse(load.equals(bl.getClass()));
-        d = Calendar.getInstance().getTime();
-        load.getDate().setTime(d.getTime());
-        toad.getDate().setTime(d.getTime());
-        assertFalse(load.equals(toad));
+        //d = Calendar.getInstance().getTime();
+        //load.getDate().setTime(d.getTime());
+        //toad.getDate().setTime(d.getTime());
+        //assertFalse(load.equals(toad));
     }
 }
