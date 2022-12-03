@@ -20,7 +20,7 @@ ____
 - As a user, I would like to get suggestions for what to add to my Bucket List
 - As a user, I would like to be able to save the information I have input
 - As a user, I would like to load previously saved information
-
+____
 # Instructions for Grader
 
 - You can generate the first required event related to adding Xs to a Y by clicking the add item button
@@ -36,6 +36,7 @@ exiting the application and when prompted before closing you can say yes to whet
 - You can reload the state of my application by clicking load existing list, but automatically in the beginning 
 if the name entered at the start matches the name of an existing bucket list user it will be loaded up
   (test this by entering in "maliha" at the beginning, which will load an existing bucket list)
+____
 
 # Phase 4: Task 2:
 - An example of how the event log would be displayed in the console when exiting the program:
