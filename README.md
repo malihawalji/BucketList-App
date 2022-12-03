@@ -85,7 +85,10 @@ Then any subsequent additional goals also are shown as 'goal added to bucket lis
 Checking off, removing goals and saving the list are also logged. 
 
 # Phase 4: Task 3:
-- I would improve my design by changing the way the Suggestion class is used in 
-the overall structure. I think that either making Suggestion extend BucketList or Goal would help
-make the functions happen more in the background so so many calls don't need to be made in the 
-ui package and can be handled more in the background.
+- I would improve my design by refactoring the way the Suggestion class is used in 
+the overall structure. I think that either making Suggestion extend BucketList would help
+make the functions happen more in the background so that many calls don't need to be made in the 
+ui package and can be handled behind the scenes which can also allow the Suggestion class to be more complex.
+- The BucketListAppGui is also not super efficient, splitting it up 
+into different classes to split up responsibilities would help so that the app's graphic features can become 
+more complex without becoming unreadable 
