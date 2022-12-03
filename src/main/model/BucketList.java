@@ -37,6 +37,7 @@ public class BucketList implements Writable {
 
     //MODIFIES: this
     //EFFECTS: adds Goal item to listOfGoals
+    // creates new event to log in event log every time a goal is added
     public void addGoal(Goal goal) {
         listOfGoals.add(goal);
         EventLog.getInstance().logEvent(new Event("goal added to bucket list"));
@@ -63,6 +64,7 @@ public class BucketList implements Writable {
     //REQUIRES: index exists, listOfGoals isn't empty
     //MODIFIES: this, Goal
     //EFFECTS: removes item from listOfGoals
+    // creates new event to log in event log every time a goal is removed
     public void getGoalItemToRemove() {
         listOfGoals.remove(anInt);
         EventLog.getInstance().logEvent(new Event("goal removed from bucket list"));
@@ -72,6 +74,7 @@ public class BucketList implements Writable {
     //MODIFIES: this, Goal
     //EFFECTS: sets goal object's name to "name" + " X Completed: " + getDateCompleted())
     // also changes goal object's experience parameter to reflect user input
+    // Creates new event in event log everytime goal is checked off
     public void getGoalItemToCheck() {
         setNewGoalName(listOfGoals.get(anInt).getGoal() + " X Completed: " + getDateCompleted());
         setExperienceNotes(listOfGoals.get(anInt).getExperience() + "Experience: " + getExperienceNotes());
@@ -122,6 +125,8 @@ public class BucketList implements Writable {
 
     //MODIFIES: this
     //EFFECTS: makes the list a JSON object
+    // creates new event to log in event log every time bucket list is
+    // converted to json file as saved
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("list of goals", this.listToJson());

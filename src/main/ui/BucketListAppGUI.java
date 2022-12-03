@@ -84,6 +84,8 @@ public class BucketListAppGUI implements ActionListener {
     //MODIFIES: this
     //EFFECTS: Constructor initializes the main frame for the GUI,
     // and calls on the methods to initialize all the action panels and the welcome panel
+    //Window listener before quitting application prints out the collection stored in Event log,
+    // which keeps track of all events related to the bucket list, to console
     public BucketListAppGUI() {
         frame = new JFrame("Bucket List App");
         //frame.setLocationRelativeTo(null);
@@ -296,6 +298,7 @@ public class BucketListAppGUI implements ActionListener {
 
     }
 
+    // TA approved override checkstyle
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     @Override
     //EFFECTS: based on action, triggered calls method to handle action

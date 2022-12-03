@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Represents a log of alarm system events.
+ * Represents a log of bucket list events.
  * We use the Singleton Design Pattern to ensure that there is only
  * one EventLog in the system and that the system has global access
  * to the single instance of the EventLog.
@@ -56,6 +56,8 @@ public class EventLog implements Iterable<Event> {
         logEvent(new Event("Event log cleared."));
     }
 
+    //EFFECTS: uses the iterator for Arraylist provided by the Iterator interface
+    // to iterate over Events in events collection
     @Override
     public Iterator<Event> iterator() {
         return events.iterator();

@@ -5,7 +5,7 @@ import java.util.Date;
 
 
 /**
- * Represents an alarm system event.
+ * Represents an event relating to the BucketList (adding, removing, checking off goals).
  */
 public class Event {
     private static final int HASH_CONSTANT = 13;
