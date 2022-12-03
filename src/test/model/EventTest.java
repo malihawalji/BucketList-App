@@ -78,9 +78,15 @@ public class EventTest {
         assertFalse(load.equals(nullE));
         assertFalse(load.equals(d));
         assertFalse(load.equals(bl.getClass()));
-        //d = Calendar.getInstance().getTime();
-        //load.getDate().setTime(d.getTime());
-        //toad.getDate().setTime(d.getTime());
-        //assertFalse(load.equals(toad));
     }
+    @Test
+    public void testEqualsAndHashcodeFalseTwo() {
+        d = Calendar.getInstance().getTime();
+        load = new Event("goals loaded from saved bucket list");
+        toad = new Event("TOAD");
+        load.getDate().setTime(d.getTime());
+        toad.getDate().setTime(d.getTime());
+        assertFalse(load.equals(toad));
+    }
+
 }
