@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Objects;
 
 import static java.awt.Component.CENTER_ALIGNMENT;
@@ -610,7 +609,7 @@ public class BucketListAppGUI implements ActionListener {
         try {
             boolean fileCreated = file.createNewFile();
             if (fileCreated) {
-                System.out.println("new file created");
+                //System.out.println("new file created");
             }
             JsonWriter jsonWriter = new JsonWriter(jsonStore);
             jsonWriter.open();
@@ -646,14 +645,24 @@ public class BucketListAppGUI implements ActionListener {
                 JOptionPane.showConfirmDialog(mainMenu,"Loaded " + bucketL.getName()
                         + "'s Bucket List from" + jsonStore, "Loaded", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.INFORMATION_MESSAGE, imageIcon);
+                displayList();
             } catch (IOException e) {
-                name = JOptionPane.showInputDialog("Unable to read from file: " + jsonStore
-                        + "\nfile may not exist, try typing in your name again: ");
-                bucketL.setName(name);
-                loadGoals();
+                loadGoalsCatchClause();
             }
-            displayList();
         }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates a new file with the person's name if one doesn't exist
+    public void loadGoalsCatchClause() {
+//        name = JOptionPane.showInputDialog("Unable to read from file: " + jsonStore
+//                + "\nfile may not exist, try typing in your name again: ");
+//        bucketL.setName(name);
+        jsonStore = "./data/" + bucketL.getName() + "bucketList.json";
+        //if (!jsonStore.contains(bucketL.getName())) {
+        File file = new File("./data/" + textName.getText() + "bucketList.json");
+        mainMenuAction();
+        //}
     }
 
     //MODIFIES: this
