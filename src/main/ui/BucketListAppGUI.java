@@ -297,7 +297,6 @@ public class BucketListAppGUI implements ActionListener {
 
     }
 
-    // TA approved override checkstyle
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     @Override
     //EFFECTS: based on action, triggered calls method to handle action
